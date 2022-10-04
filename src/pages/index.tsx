@@ -100,11 +100,11 @@ const Home: NextPage<props> = (props) => {
         <link rel="icon" href="/heart.png" />
       </Head>
 
-      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4 font-Sedgwick">
+      <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4 font-Sedgwick bg-black">
         <TopRigthAnalysis />
         <SilentChatter />
         <VerificationContainer />
-        <div className="grid gap-3 pt-3 mt-12 text-center md:grid-cols-2 lg:w-2/3">
+        <div className="grid gap-3 pt-3 mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
           <LinkContainer link="https://www.twitch.tv/silentdestroyerz">
             <span className="text-[#6441a5] text-5xl pr-5">
               <FaTwitch />
@@ -153,7 +153,7 @@ const Home: NextPage<props> = (props) => {
             <h2 className="text-white font-bold text-5xl ml-5">Wishlist</h2>
           </LinkContainer>
         </div>
-        <div className="w-screen h-screen absolute -z-10">
+        <div className="w-screen h-screen absolute ">
           <Image src={background} alt="background" layout="fill"></Image>
         </div>
       </main>
@@ -180,7 +180,7 @@ const TopRigthAnalysis = () => {
   const { data } = trpc.useQuery(["example.getCount"]);
   const { data: unique } = trpc.useQuery(["example.getUniqueCount"]);
   return (
-    <div className="absolute top-0 right-0 flex flex-col">
+    <div className="absolute top-0 right-0 flex flex-col z-10">
       <h1 className="text-white">Unique : {unique}</h1>
       <h1 className="text-white">
         Baited : {data?._sum.count ? data?._sum.count : 0}
