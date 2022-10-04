@@ -36,7 +36,7 @@ const Home: NextPage<props> = (props) => {
       <div
         className={
           isVerificationScreenOpen
-            ? "z-10 absolute w-screen h-screen flex items-center justify-center"
+            ? "z-20 absolute w-screen h-screen flex items-center justify-center"
             : "hidden"
         }
       >
@@ -104,7 +104,7 @@ const Home: NextPage<props> = (props) => {
         <TopRigthAnalysis />
         <SilentChatter />
         <VerificationContainer />
-        <div className="grid gap-3 pt-3 mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
+        <div className="grid gap-3 pt-3 md:mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
           <LinkContainer link="https://www.twitch.tv/silentdestroyerz">
             <span className="text-[#6441a5] text-5xl pr-5">
               <FaTwitch />
