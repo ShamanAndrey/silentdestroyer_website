@@ -9,21 +9,27 @@ import { useState } from "react";
 import Throne from "/public/Thone.png";
 import Bust from "/public/Bust.png";
 import Smug from "/public/smug.png";
+import type { NextApiRequest } from "next";
 
-const Home: NextPage = () => {
+interface props {
+  ip: string;
+}
+
+const Home: NextPage<props> = (props) => {
+  const ip = props.ip;
   const [isVerificationScreenOpen, setIsVerificationScreenOpen] =
     useState(false);
 
   const VerificationContainer = () => {
     const ctx = trpc.useContext();
-    const { mutate } = trpc.useMutation("example.addBaited", {
+    const { mutate } = trpc.useMutation("example.upsertBaited", {
       onSuccess: () => {
-        ctx.invalidateQueries("example.data");
+        ctx.invalidateQueries("example.getCount");
       },
     });
 
     function handleMutate() {
-      mutate({ ipAddress: "Ip Address" });
+      mutate({ ip: ip });
     }
 
     return (
@@ -47,7 +53,7 @@ const Home: NextPage = () => {
           <h1 className="text-white text-2xl">18+ Content</h1>
           <a
             className="bg-[#8c50c97d] hover:bg-[#9462c67d] mt-4 py-3 px-6 rounded-lg transition-all duration-200"
-            href="https://google.com"
+            href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley"
             target="_blank"
             rel="noreferrer"
             onClick={() => handleMutate()}
@@ -95,28 +101,29 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="container mx-auto flex flex-col items-center justify-center min-h-screen p-4 font-Sedgwick">
-        <SilentChatter></SilentChatter>
+        <TopRigthAnalysis />
+        <SilentChatter />
         <VerificationContainer />
         <div className="grid gap-3 pt-3 mt-12 text-center md:grid-cols-2 lg:w-2/3">
-          <LinkContainer link="https://google.com">
+          <LinkContainer link="https://www.twitch.tv/silentdestroyerz">
             <span className="text-[#6441a5] text-5xl pr-5">
               <FaTwitch />
             </span>
             <h2 className="text-[#6441a5] font-bold text-5xl">Twitch</h2>
           </LinkContainer>
-          <LinkContainer link="https://google.com">
+          <LinkContainer link="https://discord.com/invite/qRs74jU4mN">
             <span className="text-[#5865F2] text-5xl pr-5">
               <FaDiscord />
             </span>
             <h2 className="text-[#5865F2] font-bold text-5xl">Discord</h2>
           </LinkContainer>
-          <LinkContainer link="https://google.com">
+          <LinkContainer link="https://www.tiktok.com/@silentdestroyerz_ttv">
             <span className="text-white text-5xl pr-5">
               <FaTiktok />
             </span>
             <h2 className="text-white font-bold text-5xl">TikTok</h2>
           </LinkContainer>
-          <LinkContainer link="https://google.com">
+          <LinkContainer link="https://www.youtube.com/channel/UCx5pgI2XWXsUvjjA9TO9X6w">
             <span className="text-red-500 text-5xl pr-5">
               <FaYoutube />
             </span>
@@ -136,7 +143,7 @@ const Home: NextPage = () => {
               <span className="text-blue-600">Fans</span>
             </h2>
           </div>
-          <LinkContainer link="https://google.com">
+          <LinkContainer link="https://throne.me/u/silentdestroyerz">
             <Image
               src={Throne}
               alt="throne logo"
@@ -163,18 +170,42 @@ type Props = {
 
 const LinkContainer: React.FC<Props> = ({ link, children }) => {
   return (
-    <a className="btn" href={link}>
+    <a className="btn" href={link} target="_blank" rel="noreferrer">
       {children}
     </a>
   );
 };
 
 const TopRigthAnalysis = () => {
-  const { data } = trpc.useQuery(["example.data"]);
-
+  const { data } = trpc.useQuery(["example.getCount"]);
+  const { data: unique } = trpc.useQuery(["example.getUniqueCount"]);
   return (
-    <div>
-      <h1>{data}</h1>
+    <div className="absolute top-0 right-0 flex flex-col">
+      <h1 className="text-white">Unique : {unique}</h1>
+      <h1 className="text-white">
+        Baited : {data?._sum.count ? data?._sum.count : 0}
+      </h1>
     </div>
   );
 };
+
+export async function getServerSideProps(context: { req: NextApiRequest }) {
+  let ip;
+
+  const { req } = context;
+
+  if (req.headers["x-forwarded-for"]) {
+    ip = req.headers["x-forwarded-for"].toString().split(",")[0];
+  } else if (req.headers["x-real-ip"]) {
+    ip = req.connection.remoteAddress;
+  } else {
+    ip = req.connection.remoteAddress;
+  }
+
+  console.log(ip);
+  return {
+    props: {
+      ip,
+    },
+  };
+}

@@ -14,8 +14,7 @@ model Example {
     id String @id @default(cuid())
 }
 
-model Counter {
-    id        String @id @default(cuid())
-    ipAddress String
-    count     Int
+model User {
+    ip    String @id
+    count Int    @default(1)
 }

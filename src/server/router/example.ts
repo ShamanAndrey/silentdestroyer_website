@@ -2,42 +2,28 @@ import { createRouter } from "./context";
 import { z } from "zod";
 
 export const exampleRouter = createRouter()
-  .query("hello", {
-    input: z
-      .object({
-        text: z.string().nullish(),
-      })
-      .nullish(),
-    resolve({ input }) {
-      return {
-        greeting: `Hello ${input?.text ?? "world"}`,
-      };
-    },
-  })
-  .query("getAll", {
+  .query("getCount", {
     async resolve({ ctx }) {
-      return await ctx.prisma.example.findMany();
+      return await ctx.prisma.user.aggregate({
+        _sum: {
+          count: true,
+        }
+      });
     },
   })
-  .query("data", {
-    async resolve({ctx}) {
-      
-      const ips =  await ctx.prisma.counter.findMany()
-
-      return ips.map(x => x.ipAddress).join(", ")
+  .query("getUniqueCount", {
+    async resolve({ ctx }) {
+      return await ctx.prisma.user.count();
     }
   })
-  .mutation("addBaited", {
+  .mutation("upsertBaited", {
     input: z.object({
-      ipAddress: z.string(),
+      ip: z.string(),
     }),
     async resolve({ ctx,input }) {
-      return await ctx.prisma.counter.create({
-        data: {
-          ipAddress: input.ipAddress,
-          count : 1
-        },
-      });
+      return await ctx.prisma.user.upsert(
+        {create : {ip: input.ip}, update : {count : {increment : 1}}, where : {ip : input.ip}}
+      );
     }
   })
 
