@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply bg-black opacity-70 flex justify-center content-center p-6 duration-500 border-2 border-gray-500 rounded-xl shadow-xl motion-safe:hover:scale-105 cursor-pointer
+    }
+}
