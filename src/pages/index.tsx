@@ -29,31 +29,27 @@ const Home: NextPage<props> = (props) => {
         ctx.invalidateQueries("example.getCount");
       },
     });
-
     function handleMutate() {
       mutate({ ip: ip });
     }
-
     const variants = {
-      open: { opacity: 1, y: "200px" },
-      closed: { opacity: 0, y: "0px" },
+      open: { opacity: 1, y: "0px" },
+      closed: { opacity: 0, y: "200px" },
     };
-
     return (
-      <div className="flex items-center justify-center">
-        {isVerificationScreenOpen ? (
-          <motion.div
-            className="w-screen h-screen bg-black opacity-75 absolute top-0 left-0 z-20"
-            onClick={() => {
-              setIsVerificationScreenOpen(false);
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
-          />
-        ) : null}
+      <div className="absolute w-screen h-screen flex justify-center items-center">
+        <motion.div
+          className="w-screen h-screen bg-black opacity-75 absolute top-0 left-0 z-20"
+          onClick={() => {
+            setIsVerificationScreenOpen(false);
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.8 }}
+        />
+
         <motion.div
           className="absolute z-20 md:w-[420px] w-[320px] h-44 bg-[#141414] rounded-2xl flex flex-col justify-center items-center border-2 border-gray-500 overflow-hidden"
-          initial={{ opacity: 0, y: "300px" }}
+          initial={{ opacity: 0, y: "200px" }}
           animate={isVerificationScreenOpen ? "open" : "closed"}
           variants={variants}
           transition={{ duration: 0.5 }}
@@ -118,8 +114,8 @@ const Home: NextPage<props> = (props) => {
         <AnimatePresence>
           <TopRigthAnalysis />
           <SilentChatter />
-          <VerificationContainer />
-          <div className=" grid gap-3 pt-3 md:mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
+          {isVerificationScreenOpen ? <VerificationContainer /> : null}
+          <div className="grid gap-3 pt-3 md:mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
             <LinkContainer link="https://www.twitch.tv/silentdestroyerz">
               <span className="text-[#6441a5] text-5xl pr-5">
                 <FaTwitch />
