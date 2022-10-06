@@ -110,7 +110,7 @@ const Home: NextPage<props> = (props) => {
         <link rel="icon" href="/heart.png" />
       </Head>
 
-      <main className=" container mx-auto flex flex-col items-center justify-center min-h-screen p-4 font-Sedgwick bg-black">
+      <main className=" container mx-auto flex flex-col items-center justify-center min-h-screen p-4 font-Sedgwick bg-[#645b6c]">
         <AnimatePresence>
           <TopRigthAnalysis />
           <SilentChatter />
