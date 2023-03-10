@@ -10,6 +10,7 @@ import Throne from "/public/Thone.png";
 import Bust from "/public/Bust.png";
 import Smug from "/public/smug.png";
 import Heart from "/public/heart.png";
+import Pillow from "/public/meee.jpg";
 import type { NextApiRequest } from "next";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -116,7 +117,7 @@ const Home: NextPage<props> = (props) => {
           <SilentChatter />
           {isVerificationScreenOpen ? <VerificationContainer /> : null}
           <div className="grid gap-3 pt-3 md:mt-12 text-center md:grid-cols-2 lg:w-2/3 z-10">
-            <LinkContainer link="https://www.twitch.tv/silentdestroyerz">
+            <LinkContainer link="https://www.twitch.tv/silentdestroyerzvt">
               <span className="text-[#6441a5] text-5xl pr-5">
                 <FaTwitch />
               </span>
@@ -164,9 +165,9 @@ const Home: NextPage<props> = (props) => {
               <h2 className="text-white font-bold text-5xl ml-5">Wishlist</h2>
             </LinkContainer>
           </div>
-          <div className="w-screen h-screen absolute ">
+          <div className="w-screen h-screen absolute">
             <Image
-              src={background}
+              src={Pillow}
               alt="background"
               layout="fill"
               objectFit="cover"
